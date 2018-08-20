@@ -4,8 +4,74 @@ const dateFormat = require('dateformat');
 const convert = require("hh-mm-ss")
 const fs = require('fs');
 const moment = require('moment');
-const prefix = "&";
+const prefix = "?";
 
+client.on('ready', function(){
+  client.user.setStatus("dnd");
+  var ms = 100000 ;
+  var setGame = [`عدد سيرفرات البوت :${client.guilds.size}`];
+  var i = -1;
+  var j = 0;
+  setInterval(function (){
+      if( i == -1 ){
+          j = 1;
+      }
+      if( i == (setGame.length)-1 ){
+          j = -1;
+      }
+      i = i+j;
+      client.user.setGame(setGame[i],`http://www.twitch.tv/Vortex`);
+  }, ms);100000
+
+});
+
+const devs = ["450711003324350485" , "408136927259131905"]
+
+const adminprefix = "?";
+client.on('message', message => {
+    var argresult = message.content.split(` `).slice(1).join(' ');
+      if (!devs.includes(message.author.id)) return;
+      
+  if (message.content.startsWith(adminprefix + 'ply')) {
+    client.user.setGame(argresult);
+      message.channel.sendMessage(`**:white_check_mark:   ${argresult}**`)
+  } else 
+    if (message.content === (adminprefix + "Percie")) {
+    message.guild.leave();        
+  } else  
+  if (message.content.startsWith(adminprefix + 'wt')) {
+  client.user.setActivity(argresult, {type:'WATCHING'});
+      message.channel.sendMessage(`**:white_check_mark:   ${argresult}**`)
+  } else 
+  if (message.content.startsWith(adminprefix + 'ls')) {
+  client.user.setActivity(argresult , {type:'LISTENING'});
+      message.channel.sendMessage(`**:white_check_mark:   ${argresult}**`)
+  } else     
+    if (message.content.startsWith(adminprefix + 'setname')) {
+  client.user.setUsername(argresult).then
+      message.channel.sendMessage(`**${argresult}** : Done :>`)
+  return message.reply("**You Can't Change Your Name ,Only After Two Hours :>**");
+  } else
+    if (message.content.startsWith(adminprefix + 'setavatar')) {
+  client.user.setAvatar(argresult);
+    message.channel.sendMessage(`**${argresult}** : تم تغير صورة البوت`);
+        } else     
+  if (message.content.startsWith(adminprefix + 'st')) {
+    client.user.setGame(argresult, "https://www.twitch.tv/idk");
+      message.channel.sendMessage(`**:white_check_mark:   ${argresult}**`)
+  }
+    if(message.content === adminprefix + "restart") {
+      if (!devs.includes(message.author.id)) return;
+          message.channel.send(`:warning:️ **Bot restarting by ${message.author.username}**`);
+        console.log("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        console.log(`⚠️ Bot restarting... ⚠️`);
+        console.log("===============================================\n\n");
+        client.destroy();
+        child_process.fork(__dirname + "/bot.js");
+        console.log(`Bot Successfully Restarted`);
+    }
+  
+  });
 
 //╭━━━╮╱╱╭╮╱╭╮
 //┃╭━╮┃╱╱┃┃╱┃┃
@@ -17,7 +83,7 @@ const prefix = "&";
  
 client.on('message', message => {
 
-if (message.content.startsWith ("&id")) {
+if (message.content.startsWith ("?id")) {
   
   if(!message.channel.guild) return;
   
@@ -211,7 +277,7 @@ var mentionned = message.mentions.users.first();
   
   
   client.on('message',message =>{
-  var prefix = "&";
+  var prefix = "?";
   if(message.content.startsWith(prefix + 'top')) {
 message.guild.fetchInvites().then(i =>{
 var invites = [];
@@ -239,7 +305,7 @@ var embed = new Discord.RichEmbed()
 });
   
   client.on('message', message => {
-var prefix = '&';
+var prefix = '?';
 if(message.content.startsWith(prefix + 'roleperms')) {
   var msg = message.content.toLowerCase();
 var role2 = msg.split(' ').slice(1).join(" ").toLowerCase(); 
@@ -403,7 +469,7 @@ if(role1.hasPermissions('SPEAK')) {
  
 client.on("message", async message => {
   if(!message.channel.guild) return;
-  var prefix = "&";
+  var prefix = "?";
   if(message.content.startsWith(prefix + 'invites')) {
   var nul = 0
   var guild = message.guild
@@ -464,7 +530,7 @@ return;
   
   client.on('message', message => {
   if(!message.channel.guild) return;
-  var prefix = "&";
+  var prefix = "?";
   if(message.content.startsWith(prefix + 'channel')) {
   let channel = message.channel
   var embed = new Discord.RichEmbed()
@@ -483,7 +549,7 @@ return;
   
   client.on("message", async message => {
   if(!message.channel.guild) return;
-  var prefix = "&";
+  var prefix = "?";
   if(message.content.startsWith(prefix + 'member')) {
   let guild = await message.guild.fetchMembers()
   let bots = guild.members.filter(m => m.user.bot).size
@@ -510,7 +576,7 @@ message.channel.send({ embed: embed });
   
   
   client.on('message', message => {
-  var prefix = "&"
+  var prefix = "?"
 if(message.content.startsWith (prefix  + 'mb')) {
 if(!message.channel.guild) return;
   let embed = new Discord.RichEmbed()
@@ -530,7 +596,7 @@ if(!message.channel.guild) return;
   
   client.on("message", async message => {
   if(!message.channel.guild) return;
-   var prefix= "&";
+   var prefix= "?";
   if(message.content.startsWith(prefix + 'server')) {
   let guild = message.guild
   let channel = message.channel
@@ -564,7 +630,7 @@ var embed = new Discord.RichEmbed()
   });
   
   client.on('message', message => {
-  var prefix = "&"
+  var prefix = "?"
   if(message.content === prefix + "emojis") {
 const emojiList = message.guild.emojis.map(e=>e.toString()).join(" ");
 message.channel.send(emojiList);
@@ -574,7 +640,7 @@ message.channel.send(emojiList);
   
 client.on("message", message => {
   let args = message.content.split(" ").slice(1);
-if (message.content.startsWith('&report')) {
+if (message.content.startsWith('?report')) {
   let user = message.mentions.users.first();
   let reason = args.slice(1).join(' ');
   let modlog = client.channels.find('name', 'report');
@@ -628,7 +694,7 @@ message.channel.sendEmbed(embed);
   
   client.on('message', message => {
   if(!message.channel.guild) return;
-  if (message.content.startsWith('&ping')) {
+  if (message.content.startsWith('?ping')) {
   if(!message.channel.guild) return;
   var msg = `${Date.now() - message.createdTimestamp}`
   var api = `${Math.round(client.ping)}`
@@ -646,7 +712,7 @@ message.channel.sendEmbed(embed);
   
    
   client.on('message', message => {
-  var prefix = "&";
+  var prefix = "?";
   
 if (message.author.bot) return;
 if (!message.content.startsWith(prefix)) return;
@@ -675,7 +741,7 @@ message.delete()
   });
    
   client.on("message", message => {
-  const prefix = "&"
+  const prefix = "?"
  
 if(!message.channel.guild) return;
  if(message.author.bot) return;
@@ -694,7 +760,7 @@ const embed = new Discord.RichEmbed()
 });
 
   client.on('message', message =>{
-  if(message.content == "+roles"){
+  if(message.content == "?roles"){
   var roles = '',
   ros=message.guild.roles.size,
   role = [];
@@ -708,7 +774,7 @@ role.push(message.guild.roles.filter(r => r.position == ros-i).map(r => `${i}- $
   
   
   client.on('message', message => {
-  if (message.content === "&rooms") {
+  if (message.content === "?rooms") {
   if (message.author.bot) return
 if (!message.guild) return;
    
@@ -726,7 +792,7 @@ if (!message.guild) return;
   
   const HeRo = new Discord.Client();
   client.on('message', message => {
-  var prefix = "&";
+  var prefix = "?";
   
   if (message.content === prefix + "date") {
   if (!message.channel.guild) return message.reply('** This command only for servers **');  
@@ -747,7 +813,7 @@ if (!message.guild) return;
   
   
 client.on('message', message => {
-  var prefix = "&";
+  var prefix = "?";
   var args = message.content.substring(prefix.length).split(" ");
   if (message.content.startsWith(prefix + "user")) {
 message.guild.fetchInvites().then(invs => {
@@ -790,7 +856,7 @@ var embed = new Discord.RichEmbed()
 });
   
 client.on("message", message => {
-  var prefix = "&";
+  var prefix = "?";
   var args = message.content.substring(prefix.length).split(" ");
   if (message.content.startsWith(prefix + "report-owner")) {
 let reportMember = message.guild.member(message.mentions.members.first());
@@ -834,7 +900,7 @@ message.channel.send("تم ارسال الأبلاغ بنجاح\n\nمعلوما�
   
   
 client.on('message', message => {
-var prefix = "&";
+var prefix = "?";
   
  if (message.content === prefix + "dt") {
  if (!message.channel.guild) return message.reply('** This command only for servers **');  
@@ -903,7 +969,7 @@ var Date15= new Discord.RichEmbed()
  
   
   client.on('message', message => {
-var prefix = "&"
+var prefix = "?"
   
   if(message.content.startsWith(prefix + "inforole")) {
    var args = message.content.split(" ").slice(1);
@@ -940,7 +1006,7 @@ message.channel.send({embed});
   
   client.on('message' , async message => {
 if(message.author.bot) return;
-var prefix = "&"; 
+var prefix = "?"; 
 if (message.content.startsWith(prefix + "voice")) {
 var guild = message.guild
   if(message.channel.type == 'dm') return;
@@ -964,7 +1030,7 @@ bans.forEach(user => {
 }
   });
 client.on('message', message => {
-  var prefix = "&"; 
+  var prefix = "?"; 
   
   if(message.content.startsWith(prefix +"bans")) {
  message.guild.fetchBans()
@@ -975,7 +1041,7 @@ client.on('message', message => {
   
   
   client.on('message', async message => {
-var prefix = "&"; 
+var prefix = "?"; 
 let messageArray = message.content.split(' ');
 let args = messageArray.slice(1);
 if(message.content.startsWith(prefix + "info-invite")) {
@@ -999,7 +1065,7 @@ message.channel.sendEmbed(embed);
   });
   
   client.on("message", message => {
-  if (message.content === "&help") {
+  if (message.content === "?help") {
   message.react("✅")
   message.react("😵")
    const embed = new Discord.RichEmbed() 
